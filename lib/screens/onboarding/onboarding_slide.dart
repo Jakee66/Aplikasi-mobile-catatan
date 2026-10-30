@@ -1,10 +1,22 @@
 import 'package:flutter/widgets.dart';
 
-/// Satu titik tujuan kursor animasi beserta label tooltip-nya.
-class CursorStep {
-  const CursorStep(this.alignment, this.label);
+/// Mengembalikan key untuk elemen mockup yang menjadi sasaran kursor.
+typedef TargetKeyOf = GlobalKey Function(int targetId);
 
+/// Satu langkah kursor animasi: menunjuk elemen mockup, atau titik bebas.
+class CursorStep {
+  /// Kursor menuju elemen yang diberi `targetKey(targetId)` di mockup.
+  /// Posisinya diukur langsung dari layout, jadi selalu tepat sasaran.
+  const CursorStep.target(this.targetId, this.label)
+      : alignment = Alignment.center;
+
+  /// Kursor berada di titik bebas (dipakai sebagai posisi awal).
+  const CursorStep.at(this.alignment, this.label) : targetId = null;
+
+  final int? targetId;
   final Alignment alignment;
+
+  /// Teks petunjuk yang tampil di bawah kotak peraga.
   final String label;
 }
 
@@ -22,7 +34,8 @@ class OnboardingSlide {
   final String description;
 
   /// Mockup kecil layar yang dijelaskan. [step] = langkah kursor saat ini.
-  final Widget Function(BuildContext context, int step) previewBuilder;
+  final Widget Function(BuildContext context, int step, TargetKeyOf targetKey)
+      previewBuilder;
 
   /// Kosong = tanpa kursor.
   final List<CursorStep> cursorSteps;

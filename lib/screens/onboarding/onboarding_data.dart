@@ -9,7 +9,7 @@ abstract final class OnboardingData {
       title: '1. Selamat Datang di CatatAja',
       description:
           'Aplikasi pencatatan pribadi dan kelompok modern untuk tugas sekolah & kerjaan.',
-      previewBuilder: (_, __) => const WelcomePreview(),
+      previewBuilder: (_, __, ___) => const WelcomePreview(),
     ),
     OnboardingSlide(
       title: '2. Catatan Pribadi vs Bersama',
@@ -17,41 +17,44 @@ abstract final class OnboardingData {
           'Beralih dengan mudah antara catatan pribadi atau catatan kelompok bersama teman.',
       loopCursor: true,
       cursorSteps: const [
-        CursorStep(Alignment(0.5, -0.78), 'Bersama'),
-        CursorStep(Alignment(-0.5, -0.78), 'Pribadi'),
+        CursorStep.target(TabsPreview.sharedTabId, 'Pilih tab "Bersama"'),
+        CursorStep.target(TabsPreview.personalTabId, 'Pilih tab "Pribadi"'),
       ],
       // Langkah 0 = tab "Bersama" aktif, langkah 1 = tab "Pribadi" aktif.
-      previewBuilder: (_, step) => TabsPreview(isSharedActive: step == 0),
+      previewBuilder: (_, step, targetKey) => TabsPreview(
+        isSharedActive: step == 0,
+        targetKey: targetKey,
+      ),
     ),
     OnboardingSlide(
       title: '3. Tambah Catatan & Undang Teman',
       description:
           'Klik tombol + untuk menambah catatan baru dan centang nama teman yang diundang.',
       cursorSteps: const [
-        CursorStep(Alignment(-0.3, -0.2), 'Klik Tombol Tambah (+)'),
-        CursorStep(Alignment(0.85, 0.8), 'Klik Tombol Tambah (+)'),
+        CursorStep.at(Alignment(-0.3, -0.2), 'Klik tombol Tambah (+)'),
+        CursorStep.target(InvitePreview.addButtonId, 'Klik tombol Tambah (+)'),
       ],
-      previewBuilder: (_, __) => const InvitePreview(),
+      previewBuilder: (_, __, targetKey) => InvitePreview(targetKey: targetKey),
     ),
     OnboardingSlide(
       title: '4. Cari & Tambah Teman',
       description:
           'Cari temanmu lewat form pencarian nama lalu klik tombol + Tambah.',
       cursorSteps: const [
-        CursorStep(Alignment(-0.4, -0.6), 'Klik "+ Tambah" Teman'),
-        CursorStep(Alignment(0.78, 0), 'Klik "+ Tambah" Teman'),
+        CursorStep.at(Alignment(-0.4, -0.6), 'Klik "+ Tambah" pada teman'),
+        CursorStep.target(FriendPreview.addButtonId, 'Klik "+ Tambah" pada teman'),
       ],
-      previewBuilder: (_, __) => const FriendPreview(),
+      previewBuilder: (_, __, targetKey) => FriendPreview(targetKey: targetKey),
     ),
     OnboardingSlide(
       title: '5. Kelola Anggota di Detail Catatan',
       description:
           'Meskipun catatan sudah disimpan, kamu tetap bisa menambah anggota baru kapan saja.',
       cursorSteps: const [
-        CursorStep(Alignment(-0.4, 0.5), 'Klik "+ Tambah Anggota"'),
-        CursorStep(Alignment(0.72, -0.2), 'Klik "+ Tambah Anggota"'),
+        CursorStep.at(Alignment(-0.4, 0.6), 'Klik "+ Tambah Anggota"'),
+        CursorStep.target(MemberPreview.addButtonId, 'Klik "+ Tambah Anggota"'),
       ],
-      previewBuilder: (_, __) => const MemberPreview(),
+      previewBuilder: (_, __, targetKey) => MemberPreview(targetKey: targetKey),
     ),
   ];
 }

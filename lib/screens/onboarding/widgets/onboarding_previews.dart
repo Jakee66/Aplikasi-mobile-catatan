@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../widgets/user_avatar.dart';
+import '../onboarding_slide.dart';
 
 /// Mockup mini untuk tiap slide tutorial.
-/// Posisi elemen dibuat tetap agar kursor animasi tepat sasaran.
+///
+/// Elemen yang menjadi sasaran kursor diberi `targetKey(id)` sehingga posisi
+/// kursor diukur dari layout sebenarnya (tidak perlu menebak koordinat).
 
 class WelcomePreview extends StatelessWidget {
   const WelcomePreview({super.key});
@@ -36,9 +39,17 @@ class WelcomePreview extends StatelessWidget {
 }
 
 class TabsPreview extends StatelessWidget {
-  const TabsPreview({super.key, required this.isSharedActive});
+  const TabsPreview({
+    super.key,
+    required this.isSharedActive,
+    required this.targetKey,
+  });
+
+  static const sharedTabId = 0;
+  static const personalTabId = 1;
 
   final bool isSharedActive;
+  final TargetKeyOf targetKey;
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +65,19 @@ class TabsPreview extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: _DemoTab(label: 'Pribadi', isActive: !isSharedActive),
+                child: _DemoTab(
+                  key: targetKey(personalTabId),
+                  label: 'Pribadi',
+                  isActive: !isSharedActive,
+                ),
               ),
               const SizedBox(width: 4),
               Expanded(
-                child: _DemoTab(label: 'Bersama', isActive: isSharedActive),
+                child: _DemoTab(
+                  key: targetKey(sharedTabId),
+                  label: 'Bersama',
+                  isActive: isSharedActive,
+                ),
               ),
             ],
           ),
@@ -100,7 +119,11 @@ class TabsPreview extends StatelessWidget {
 }
 
 class InvitePreview extends StatelessWidget {
-  const InvitePreview({super.key});
+  const InvitePreview({super.key, required this.targetKey});
+
+  static const addButtonId = 0;
+
+  final TargetKeyOf targetKey;
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +146,7 @@ class InvitePreview extends StatelessWidget {
         Align(
           alignment: Alignment.centerRight,
           child: Container(
+            key: targetKey(addButtonId),
             width: 36,
             height: 36,
             decoration: BoxDecoration(
@@ -138,7 +162,11 @@ class InvitePreview extends StatelessWidget {
 }
 
 class FriendPreview extends StatelessWidget {
-  const FriendPreview({super.key});
+  const FriendPreview({super.key, required this.targetKey});
+
+  static const addButtonId = 0;
+
+  final TargetKeyOf targetKey;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +182,7 @@ class FriendPreview extends StatelessWidget {
                 style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
               ),
             ),
-            const _DemoButton(label: '+ Tambah'),
+            _DemoButton(key: targetKey(addButtonId), label: '+ Tambah'),
           ],
         ),
       ),
@@ -163,7 +191,11 @@ class FriendPreview extends StatelessWidget {
 }
 
 class MemberPreview extends StatelessWidget {
-  const MemberPreview({super.key});
+  const MemberPreview({super.key, required this.targetKey});
+
+  static const addButtonId = 0;
+
+  final TargetKeyOf targetKey;
 
   @override
   Widget build(BuildContext context) {
@@ -191,15 +223,15 @@ class MemberPreview extends StatelessWidget {
                     ),
                   ),
                 ),
-                const _DemoButton(label: '+ Tambah'),
+                _DemoButton(key: targetKey(addButtonId), label: '+ Tambah'),
               ],
             ),
             const SizedBox(height: 8),
             const Wrap(
               spacing: 4,
               children: [
-                _DemoChip(label: 'Saya', isSelected: false),
-                _DemoChip(label: 'Budi', isSelected: false),
+                _DemoChip(label: 'Saya'),
+                _DemoChip(label: 'Budi'),
               ],
             ),
           ],
@@ -212,7 +244,7 @@ class MemberPreview extends StatelessWidget {
 // --- Elemen kecil pendukung -------------------------------------------------
 
 class _DemoTab extends StatelessWidget {
-  const _DemoTab({required this.label, required this.isActive});
+  const _DemoTab({super.key, required this.label, required this.isActive});
 
   final String label;
   final bool isActive;
@@ -289,7 +321,7 @@ class _DemoChip extends StatelessWidget {
 }
 
 class _DemoButton extends StatelessWidget {
-  const _DemoButton({required this.label});
+  const _DemoButton({super.key, required this.label});
 
   final String label;
 
